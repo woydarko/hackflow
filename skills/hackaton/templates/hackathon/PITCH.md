@@ -22,7 +22,7 @@ Judges often score investability and clarity, not code. Fill with confirmed fact
 ## Why not a generic AI wrapper
 [What integration, data, workflow, or UX makes this more than a prompt on top of a model.]
 
-## Business model canvas (lite)
+## Business model canvas
 | Block | Answer |
 | --- | --- |
 | Customer segment (who pays) | |
