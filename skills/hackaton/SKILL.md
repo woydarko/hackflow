@@ -10,9 +10,15 @@ Hackathon flow: ship a working, demoable thing. Judges see the demo, not the cod
 
 ## Conventions
 
-- `<skill-dir>` = the folder containing this SKILL.md (the "base directory" shown when the skill loads). `templates/`, `references/`, `scripts/` below are relative to it. Never assume `~/.claude`; this skill also runs from `~/.codex/skills` and other agents' skill folders.
-- Skills are written as `name` (provider), e.g. `brainstorming` (superpowers). Claude Code lists plugin skills as `provider:name` (`superpowers:brainstorming`); other agents use the plain name. Resolve against the available-skills list. If a non-core skill is unavailable, say so and follow its intent by hand.
-- Commands starting with `/plugin` exist only in Claude Code and only the user can run them.
+This skill must work in Claude Code, Codex, OpenCode and any other harness that reads `SKILL.md` folders. Nothing below is specific to one of them unless stated.
+
+- `<skill-dir>` = the folder containing this SKILL.md (the base directory the harness shows or returns when it loads the skill). `templates/`, `references/`, `scripts/` are relative to it. If the harness does not tell you, find the folder named `hackaton` that contains `SKILL.md` under `~/.agents/skills`, `~/.claude/skills`, `~/.codex/skills`, `~/.config/opencode/skills`, or the project's `.agents/skills`, `.claude/skills`, `.opencode/skills`. Never hardcode one harness's path.
+- Invocation differs: Claude Code `/hackaton <arg>`, Codex `$hackaton <arg>`, OpenCode and others by asking to "use the hackaton skill" (its `skill` tool). Treat the argument as plain words after the skill name.
+- Skills are written as `name` (provider), e.g. `brainstorming` (superpowers). Claude Code lists plugin skills as `provider:name` (`superpowers:brainstorming`); other harnesses use the plain name. Resolve against the available-skills list. If a non-core skill is unavailable, say so and follow its intent by hand.
+- Superpowers skills that dispatch subagents (`subagent-driven-development`, `dispatching-parallel-agents`) need subagent support. If the harness has none, use `executing-plans`, as superpowers itself documents.
+- Project memory file: write the resume pointer into `AGENTS.md` (read by Codex, OpenCode and most others). Harnesses with their own memory file (Claude Code `CLAUDE.md`, others) get a one-line file that includes `AGENTS.md` using that tool's include syntax.
+- Commands starting with `/plugin` exist only in Claude Code and only the user can run them. Other harnesses use their own plugin or skill installers (see `references/dependencies.md`).
+- The helper scripts are bash. If bash is unavailable (plain PowerShell), do the same checks by listing the folders and tools by hand and say so.
 
 ## Backbone: superpowers comes first
 
@@ -57,7 +63,7 @@ The agent has no built-in clock. Run `date` at session start, at every checkpoin
 
 Run `bash <skill-dir>/scripts/check-deps.sh` (read-only). It detects the agent environment and lists core / recommended / web3 dependencies as OK or MISSING with their source GitHub repo. Report missing items in one line each.
 
-**Superpowers is the only blocking dependency.** If it is MISSING, stop here, show the install command from `references/dependencies.md`, and continue only after the user has installed it. For every other MISSING item show the install command and source repo, let the user run it (shell installs need the user's OK), then continue without it if the user declines, saying so. Never install silently; third-party code should be read before first install. Core = superpowers, caveman, rtk, ponytail.
+**Superpowers is the only blocking dependency.** The script cannot see every harness's plugin registry. If it reports superpowers MISSING but `brainstorming` appears in your available-skills list, treat it as installed. Otherwise, if it is MISSING, stop here, show the install command from `references/dependencies.md`, and continue only after the user has installed it. For every other MISSING item show the install command and source repo, let the user run it (shell installs need the user's OK), then continue without it if the user declines, saying so. Never install silently; third-party code should be read before first install. Core = superpowers, caveman, rtk, ponytail.
 
 Then check environment readiness: run `bash <skill-dir>/scripts/check-env.sh` and work through `references/env-readiness.md` (accounts, secrets, tooling, and for web3 **request faucet funds in the first hour**). Record results in STATE.md.
 

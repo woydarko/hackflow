@@ -1,11 +1,18 @@
 #!/usr/bin/env bash
 # Read-only dependency report for /hackaton. Works for Claude Code, Codex and any agent that keeps skills in a folder.
 # Sources and install commands: ../references/dependencies.md
-SKILL_DIRS=("$HOME/.claude/skills" "$HOME/.codex/skills" "$HOME/.agents/skills")
+CODEX_HOME_DIR="${CODEX_HOME:-$HOME/.codex}"
+# User-level and project-level skill folders of Claude Code, Codex, OpenCode and the shared .agents convention.
+SKILL_DIRS=("$HOME/.claude/skills" "$HOME/.agents/skills" "$CODEX_HOME_DIR/skills" "$HOME/.config/opencode/skills" "/etc/codex/skills"
+            ".claude/skills" ".agents/skills" ".opencode/skills")
 PLUGIN_FILE="$HOME/.claude/plugins/installed_plugins.json"
 
 has_skill()  { local d; for d in "${SKILL_DIRS[@]}"; do [ -f "$d/$1/SKILL.md" ] && return 0; done; return 1; }
 has_plugin() { grep -q "\"$1\"" "$PLUGIN_FILE" 2>/dev/null; }
+# OpenCode registers plugins (and their skills) in opencode.json, not as files in a skills folder.
+has_opencode() { grep -qi "$1" "$HOME/.config/opencode/opencode.json" "$HOME/.config/opencode/opencode.jsonc" ./opencode.json ./opencode.jsonc 2>/dev/null; }
+# Codex marketplace plugins live under its plugins folder.
+has_codexplugin() { [ -d "$CODEX_HOME_DIR/plugins" ] && [ -n "$(find "$CODEX_HOME_DIR/plugins" -maxdepth 5 -iname "*$1*" -print -quit 2>/dev/null)" ]; }
 has_cmd()    { command -v "$1" >/dev/null 2>&1; }
 
 # A check is one or more kind:target joined by '+'; any match counts as installed.
@@ -33,7 +40,7 @@ done <<'EOF'
 core|caveman|plugin:caveman@caveman+skill:caveman|JuliusBrussee/caveman
 core|rtk|cmd:rtk|rtk-ai/rtk
 core|ponytail|plugin:ponytail@ponytail+skill:ponytail|DietrichGebert/ponytail
-REQUIRED|superpowers|plugin:superpowers@claude-plugins-official+skill:brainstorming|obra/superpowers
+REQUIRED|superpowers|plugin:superpowers@claude-plugins-official+skill:brainstorming+opencode:superpowers+codexplugin:superpowers|obra/superpowers
 recommended|antislop|plugin:antislop@anti-slop+skill:antislop|miqdadbadjuber/anti-slop
 recommended|frontend-design|skill:frontend-design|anthropics/claude-plugins-official
 recommended|agent-reach|skill:agent-reach|Panniantong/Agent-Reach

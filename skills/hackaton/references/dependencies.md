@@ -47,7 +47,16 @@ Optional per ecosystem (not installed by default, ask first):
 
 ## Other agents (Codex, Cursor, Gemini CLI, Copilot CLI, ...)
 
-- The `SKILL.md` format (frontmatter `name` + `description`) is shared, so copy `skills/hackaton` into the agent's skills folder (Codex: `~/.codex/skills/`). `check-deps.sh` looks in `~/.claude/skills`, `~/.codex/skills` and `~/.agents/skills`.
+- The `SKILL.md` format (frontmatter `name` + `description`) is shared. Where each harness looks (per its official docs):
+
+| Harness | User-level skills | Project-level skills |
+|---|---|---|
+| Claude Code | `~/.claude/skills` | `.claude/skills` |
+| Codex | `~/.agents/skills` (also `$CODEX_HOME/skills`, admin `/etc/codex/skills`) | `.agents/skills` (scanned from the working dir up to the repo root) |
+| OpenCode | `~/.config/opencode/skills`, and also `~/.claude/skills` and `~/.agents/skills` | `.opencode/skills`, `.claude/skills`, `.agents/skills` |
+
+  `~/.agents/skills` therefore serves Codex and OpenCode, and `~/.claude/skills` serves Claude Code; `install.sh` / `install.ps1` in the hackflow repo install into both. `check-deps.sh` searches all of these.
+- superpowers on OpenCode is registered in `opencode.json` (`"plugin"` / `"plugins"` entry, see its README.opencode.md), not as files in a skills folder; `check-deps.sh` greps `opencode.json` for it.
 - `/plugin ...` commands exist only in Claude Code. `npx skills add <owner/repo>` is a cross-agent installer documented in the READMEs of Cyfrin/solskill, Uniswap/uniswap-ai and hugohe3/ppt-master. `npx skills add woydarko/hackflow` should work with this repo's layout but is untested.
 - superpowers lists install steps for Codex, Cursor, Gemini CLI, Copilot CLI, OpenCode and more in its [README](https://github.com/obra/superpowers). For caveman, ponytail and antislop follow the install section of each repo's README.
 - rtk: `rtk init -g --codex` or `rtk init -g --gemini` registers its hook for those agents.
