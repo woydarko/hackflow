@@ -1,14 +1,14 @@
 ---
 name: hackaton
 description: Hackathon workflow orchestrator. Use when the user types /hackaton or says they are joining/starting a hackathon, needs to ship a demo fast, or wants hackathon project docs (PRD, ARCHITECTURE, AGENTS.md, etc.) set up. Chains caveman, rtk, ponytail, superpowers, and the 8-document architecture bundle into one time-boxed flow - intake, docs, plan, build, verify, demo. Has a web3 mode (chain detection, contract audit gate, testnet deploy checklist).
-argument-hint: "[init | docs | plan | build | verify | demo | status]"
+argument-hint: "[init | deps | docs | plan | build | verify | demo | status]"
 ---
 
 # /hackaton
 
 Time-boxed hackathon flow. Ship a working, demoable thing. Judges see the demo, not the code.
 
-Arg routing: no arg or `init` -> Phase 0+1. `docs` -> Phase 2. `plan` -> 3. `build` -> 4. `verify` -> 5. `demo` -> 6. `status` -> read `docs/hackathon/STATE.md` and print phase cursor, time left, core done/total, unresolved items. If STATE.md is missing, say so and offer Phase 1. On every session start in a hackathon project, read STATE.md and TEAM.md first to resume.
+Arg routing: no arg or `init` -> Phase 0+1. `deps` -> Phase 0 only (dependency check + install guidance). `docs` -> Phase 2. `plan` -> 3. `build` -> 4. `verify` -> 5. `demo` -> 6. `status` -> read `docs/hackathon/STATE.md` and print phase cursor, time left, core done/total, unresolved items. If STATE.md is missing, say so and offer Phase 1. On every session start in a hackathon project, read STATE.md and TEAM.md first to resume.
 
 ## Principles
 
@@ -21,21 +21,9 @@ Arg routing: no arg or `init` -> Phase 0+1. `docs` -> Phase 2. `plan` -> 3. `bui
 
 ## Phase 0 - Toolchain check (once per project)
 
-Check silently, report one line each, install nothing without telling the user:
+Run `bash ~/.claude/skills/hackaton/scripts/check-deps.sh` (read-only). It lists core / recommended / web3 dependencies as OK or MISSING with their source GitHub repo. Report the result in one line per missing item.
 
-| Tool | Check | Role |
-|---|---|---|
-| caveman | `/caveman` skill exists | terse chat, save tokens |
-| rtk | `rtk --version` | token-filtered shell output (hook rewrites commands) |
-| ponytail | plugin `ponytail@ponytail` listed in `~/.claude/plugins/installed_plugins.json` | stop over-building |
-| superpowers | plugin `superpowers@claude-plugins-official` listed | brainstorming, plans, TDD, review, verification |
-
-If ponytail missing, tell user to run (they must run it, agent cannot):
-```
-/plugin marketplace add DietrichGebert/ponytail
-/plugin install ponytail@ponytail
-```
-If a tool is absent, continue without it; do not block.
+For anything MISSING, read `references/dependencies.md`, show the user the exact install command and source repo, and let the user run it (`/plugin ...` commands only the user can run; shell installs need the user's OK). Never install silently; third-party code should be read before first install. A missing dependency never blocks the flow: continue without it and say so. Core = caveman, rtk, ponytail, superpowers.
 
 Also detect the chain/ecosystem. If the brief or project is web3 (see signals in **Web3 mode** below), follow that section in every phase.
 
