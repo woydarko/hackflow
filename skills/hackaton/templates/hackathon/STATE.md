@@ -4,6 +4,7 @@ Single source of truth for `/hackaton`. Update at every phase change and checkpo
 
 ## Event
 - Name: [Hackathon name]
+- Lead (sole editor of this file in team mode): [Name]
 - Tracks / prizes targeted: [List]
 - Deadline: [YYYY-MM-DD HH:MM timezone]
 - Internal submit target: [Deadline minus 30 min]
@@ -64,7 +65,7 @@ Over-budget warnings sent: [Phase, time]
 - Stretch (auto-cut if behind): [Task IDs]
 - Post-hackathon: [Ideas deferred]
 
-## Hourly checkpoints
+## Hourly checkpoints (lead consolidates from `docs/hackathon/log/*.md`; solo: write here)
 | Time | Time left | Core done / total | Cut decision |
 | --- | --- | --- | --- |
 

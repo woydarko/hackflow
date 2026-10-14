@@ -1,6 +1,6 @@
 # hackflow
 
-Claude Code skill `/hackaton`: an all-in hackathon workflow (intake, design + docs, plan, build, verify, demo) built on the superpowers workflow as its backbone, plus caveman, rtk, ponytail and an 8-document project architecture pack. Has a web3 mode (chain detection, contract audit gate, testnet checklist).
+Claude Code skill `/hackaton`: an all-in hackathon workflow (intake, design + docs, plan, build, verify, demo, retro) built on the superpowers workflow as its backbone, plus caveman, rtk, ponytail and an 8-document project architecture pack. Has a web3 mode (chain detection, contract audit gate, testnet checklist).
 
 ## Install
 
@@ -62,9 +62,13 @@ All dependencies are optional: the skill reports what is missing and continues w
 
 ## Use
 
-`/hackaton [init | deps | docs | plan | build | verify | demo | status]`
+`/hackaton [init | deps | docs | plan | build | verify | demo | retro | status]`
 
-`templates/` holds the pristine AGENTS.md + docs/*.md pack (docs phase) and `templates/hackathon/` (STATE, TEAM, PITCH, DEPLOYMENTS, DEMO, SUBMISSION) used for state, team coordination, pitch, and on-chain deployments. `references/` holds on-demand guides: `env-readiness.md` (accounts, keys, faucet funds, with `scripts/check-env.sh`), `ship.md` (deploy, demo video, submission), `ui-design.md` (UI addendum for DESIGN_SYSTEM.md: screens, wireframes, type scale, motion, voice, visual QA), `web3.md` and `ai-projects.md` (loaded only for web3 / AI projects), and `dependencies.md`.
+`templates/` holds the pristine AGENTS.md + docs/*.md pack (docs phase) and `templates/hackathon/` (STATE, TEAM, LOG, PITCH, DEPLOYMENTS, DEMO, SUBMISSION, RETRO) used for state, team coordination, pitch, and on-chain deployments. `references/` holds on-demand guides: `env-readiness.md` (accounts, keys, faucet funds, with `scripts/check-env.sh`), `ship.md` (deploy, demo video, submission), `ui-design.md` (UI addendum for DESIGN_SYSTEM.md: screens, wireframes, type scale, motion, voice, visual QA), `web3.md` and `ai-projects.md` (loaded only for web3 / AI projects), and `dependencies.md`.
+
+## Teams
+
+To avoid git conflicts in a team, `STATE.md` has one editor (the lead) and everyone else appends to their own `docs/hackathon/log/<handle>.md`; the skill also adds `docs/hackathon/log/*.md merge=union` to the project's `.gitattributes` so concurrent appends merge cleanly.
 
 ## Development
 

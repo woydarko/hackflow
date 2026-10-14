@@ -1,7 +1,7 @@
 ---
 name: hackaton
 description: Hackathon workflow orchestrator built on the superpowers workflow. Use when the user types /hackaton or says they are joining/starting a hackathon, needs to ship a demo fast, or wants hackathon project docs (PRD, ARCHITECTURE, AGENTS.md, etc.) set up. Runs superpowers (brainstorming, plans, TDD, reviews, verification) as the backbone and wraps it with hackathon intake, state, the 8-document architecture bundle, pitch and submission, plus caveman, rtk and ponytail. Has a web3 mode (chain detection, contract audit gate, testnet deploy checklist).
-argument-hint: "[init | deps | docs | plan | build | verify | demo | status]"
+argument-hint: "[init | deps | docs | plan | build | verify | demo | retro | status]"
 ---
 
 # /hackaton
@@ -31,11 +31,12 @@ Follow `using-superpowers`. Its skills are mandatory workflow, not suggestions, 
 | 3 Plan | `using-git-worktrees`, `writing-plans` | core/stretch marks, cut-list, owners |
 | 4 Build | `subagent-driven-development` (or `executing-plans` if the user picks it), `test-driven-development`, `requesting-code-review`, `receiving-code-review`, `systematic-debugging`, `dispatching-parallel-agents` | feature flags, hourly checkpoints, handoff notes |
 | 5 Verify | `verification-before-completion`, final `requesting-code-review` | clean-env run, demo rehearsals, web3 audit gate |
-| 6 Ship | `finishing-a-development-branch` | README, DEMO, PITCH, submission checklist |
+| 6 Ship | `finishing-a-development-branch` | README, DEMO, PITCH, SUBMISSION, submission checklist |
+| 7 Retro | - | RETRO.md, cleanup, improvements fed back into this skill |
 
 ## Routing
 
-No arg or `init` -> Phase 0+1. `deps` -> Phase 0 only. `docs` -> 2. `plan` -> 3. `build` -> 4. `verify` -> 5. `demo` -> 6. `status` -> read `docs/hackathon/STATE.md` and print phase cursor, time left, the phase clock table (planned vs actual end per phase), core done/total, unresolved items, and any over-budget warning (see **Clock and budget**).
+No arg or `init` -> Phase 0+1. `deps` -> Phase 0 only. `docs` -> 2. `plan` -> 3. `build` -> 4. `verify` -> 5. `demo` -> 6. `retro` -> 7. `status` -> read `docs/hackathon/STATE.md` plus every `docs/hackathon/log/*.md` and print phase cursor, time left, the phase clock table (planned vs actual end per phase), core done/total, open blockers, unresolved items, and any over-budget warning (see **Clock and budget**).
 
 **Guard:** every arg except `init` and `deps` first checks that `docs/hackathon/STATE.md` exists. If missing, say so and offer Phase 1 before doing anything else. Never build against an unknown deadline, scope or judging criteria.
 
@@ -103,6 +104,8 @@ As soon as the batched intake answers arrive (before any follow-up question) cre
 
 Then make resume work in a fresh session, because this skill only loads when invoked: add to the project's `AGENTS.md` (create a minimal one if missing) the line `Hackathon project: before any work read docs/hackathon/STATE.md and docs/hackathon/TEAM.md, and follow the phase and cut-list recorded there.` For Claude Code also ensure a root `CLAUDE.md` exists containing `@AGENTS.md`, since it reads CLAUDE.md, not AGENTS.md.
 
+**Team mode (more than one person or agent)**: avoid git conflicts by giving every writer its own file. `STATE.md` is edited only by the lead (name them in STATE.md). Everyone else records checkpoints, blockers and handoff notes in their own append-only `docs/hackathon/log/<handle>.md` (from `templates/hackathon/LOG.md`; handle = git user name as a lowercase slug). Add the line `docs/hackathon/log/*.md merge=union` to the project's `.gitattributes` (create it if missing) so concurrent appends merge instead of conflicting. Run `git pull --rebase` before editing any shared hackathon file and commit + push right after. The lead folds the logs into STATE.md at phase boundaries. Solo: skip the log folder and write checkpoints straight into STATE.md.
+
 ## Phase 2 - Design and docs (8-document architecture bundle)
 
 1. Run `brainstorming` (superpowers) on the chosen idea. Feed it the Phase 1 facts as constraints: deadline, judging criteria, sponsor requirements, stack, team. Its approved design is the single source for the docs below; do not ask the user the same things twice.
@@ -145,7 +148,7 @@ Execute the plan with `subagent-driven-development` (or `executing-plans` if the
 - A bug that survives `systematic-debugging` and blocks the golden path: mock or cut it, note in `Unresolved` and STATE.md, tell the user.
 - Commit small and often (so a broken last-minute change can be reverted). Use `rtk` for git/test output if installed.
 - Unfinished features go behind a feature flag so the demo path always works.
-- Checkpoint every ~hour and at every phase boundary (see **Clock and budget**): print remaining time, done/total core tasks, cut decision, and append a row to the STATE.md checkpoint table. Update TEAM.md blockers. Write a short handoff note at each shift change.
+- Checkpoint every ~hour and at every phase boundary (see **Clock and budget**): print remaining time, done/total core tasks, cut decision, and append a row to your own log `docs/hackathon/log/<handle>.md` (solo: the STATE.md checkpoint table). Record blockers there too, and write a short handoff note in the log at each shift change.
 
 ## Phase 5 - Verify (before demo, not after)
 
@@ -168,6 +171,15 @@ Read `references/ship.md` first (deploy checks, demo video, submission mechanics
 - Submission checklist: repo public/accessible, license, deployed URL tested from another device and logged out, video uploaded and playable, form fields filled, track/prize boxes ticked, submitted **before** deadline minus 30 min.
 - Pitch deck only if required: use `ppt-master` skill.
 Then run `finishing-a-development-branch` (superpowers) for merge/PR/tag.
+
+## Phase 7 - Retro and cleanup (after submission)
+
+Run when the submission is in, or with `retro`. It is outside the time budget and may happen days later, for example when results arrive.
+1. Copy `templates/hackathon/RETRO.md` to `docs/hackathon/RETRO.md` and fill it from evidence: the STATE.md clock (planned vs actual), the logs, git history, the submission, and any judge feedback the user shares. Facts first, opinions second.
+2. Work through its cleanup checklist: shut down or downgrade hosting and paid services, revoke or rotate API keys and burner keys, close sponsor sandboxes, tag the final state, decide archive vs keep public. Each action that deletes or changes a live resource needs the user's OK.
+3. Review the post-hackathon list in STATE.md and ask whether to continue the project.
+4. Write concrete improvements for this skill under "Improvements to feed back into /hackaton" and offer to apply them. Any external message (thanks, posts) is drafted, never sent, without the user's OK.
+5. End with one decision for the user.
 
 ## Web3 mode
 
