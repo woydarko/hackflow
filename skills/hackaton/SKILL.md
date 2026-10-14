@@ -114,7 +114,7 @@ Procedure:
 3. Fill in **dependency order**: PRD -> DESIGN_SYSTEM -> ARCHITECTURE -> DATABASE -> SECURITY -> CODE_STYLE -> TESTING -> AGENTS.md.
 4. **Fill every section of every template completely**, whatever the event length. Hackathon additions on top of the bundle:
    - PRD: add a `Demo moment` line (the 10 seconds judges remember) and a `Judging criteria -> feature` mapping. Every feature gets Given/When/Then acceptance criteria. "Explicitly excluded" must be filled; it protects the deadline.
-   - DESIGN_SYSTEM: full tokens, layout, components, states and accessibility. Delegate visual quality to `frontend-design` / `antislop-ui` skills.
+   - DESIGN_SYSTEM (when the project has a UI): fill the bundle sections completely, then append the hackathon UI addendum from `references/ui-design.md` (screen inventory, flow, wireframes, type scale, color roles, motion, voice, demo conditions, component inventory, do/don't list, decisions log). Use `frontend-design` / `antislop-ui` for direction and Figma or Pencil tools for wireframes when available. No UI: write "No UI" with the reason.
    - ARCHITECTURE: complete stack table, boundaries, request flow, interfaces, project structure and operations. Prefer technology the team already knows.
    - DATABASE: full entities, schema, relationships, access rules, migrations. If the project truly has no persistence, state that and why.
    - SECURITY: complete. Secrets are env var names only, server-side checks for anything with user data, no keys in client bundle. Residual risks listed, not hidden.
@@ -140,7 +140,7 @@ Get user approval of the plan, then stop.
 
 Execute the plan with `subagent-driven-development` (or `executing-plans` if the user chooses it), with `test-driven-development` for all implementation code, `requesting-code-review` / `receiving-code-review` between tasks, `systematic-debugging` for bugs, and `dispatching-parallel-agents` for independent tasks, all as defined by superpowers. Hackathon layer:
 - Ponytail rules apply: need it at all? existing/native solution? smallest diff? No speculative config, no generic layers.
-- UI: use `frontend-design` + `antislop-ui` to avoid generic AI look. Mobile width check if demo may be on phone.
+- UI (if any): build in the order given in `references/ui-design.md` (tokens, shell, golden-path screens from the approved wireframes, all states, then motion), using `frontend-design` + `antislop-ui` to avoid the generic AI look. No hardcoded colors, fonts or spacing outside the tokens.
 - Research needed (sponsor API, prior art): `agent-reach` / web search, keep notes in `docs/` not in chat.
 - A bug that survives `systematic-debugging` and blocks the golden path: mock or cut it, note in `Unresolved` and STATE.md, tell the user.
 - Commit small and often (so a broken last-minute change can be reverted). Use `rtk` for git/test output if installed.
@@ -153,7 +153,7 @@ Execute the plan with `subagent-driven-development` (or `executing-plans` if the
 2. Golden path end to end on a **clean checkout / fresh env** (missing env var, missing seed data are the usual demo killers).
 3. Quick security pass: no secrets in repo or client bundle (`security-review` skill or grep for key patterns), `.env` ignored, `.env.example` present.
 4. Fallbacks: demo works with no network? Prepare mock/recorded data for any flaky external API.
-5. Pre-demo checklist: env vars documented, database seeded with demo data, error boundaries and loading/empty/error states on every demo screen, no dead buttons on the golden path.
+5. Pre-demo checklist: env vars documented, database seeded with demo data, error boundaries and loading/empty/error states on every demo screen, no dead buttons on the golden path. UI projects also run the visual QA checklist in `references/ui-design.md`.
 6. **Rehearse the full demo at least 5 times**, fixing each failure point. Most hackathon failures are demo crashes.
 7. Final `requesting-code-review` (superpowers) on the whole branch.
 8. **Rules compliance**: re-read STATE.md `Hackathon rules` and check each binding rule against the repo and the submission (code origin, AI disclosure, license, team, required APIs). A violation is a blocker; tell the user.
