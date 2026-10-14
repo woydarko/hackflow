@@ -17,8 +17,16 @@ Optional companions (the skill checks for them and continues without):
 /plugin install ponytail@ponytail
 ```
 
+Web3 mode companions (optional, third-party; read them before installing):
+
+```
+/plugin marketplace add Cyfrin/solskill
+/plugin install solidity@solskill
+git clone https://github.com/pashov/skills  # copy solidity-auditor, x-ray, fizz into ~/.claude/skills/
+```
+
 ## Use
 
 `/hackaton [init | docs | plan | build | verify | demo | status]`
 
-`templates/` holds the pristine AGENTS.md + docs/*.md pack (docs phase) and `templates/hackathon/` (STATE, TEAM, PITCH) used for state, team coordination, and pitch.
+`templates/` holds the pristine AGENTS.md + docs/*.md pack (docs phase) and `templates/hackathon/` (STATE, TEAM, PITCH, DEPLOYMENTS) used for state, team coordination, and pitch.

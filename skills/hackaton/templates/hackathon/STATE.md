@@ -34,6 +34,13 @@ Last updated: [timestamp]
 - Visible output for judges: [UI / output]
 - Passed filter: [Yes / No - reason]
 
+## Web3 (if applicable)
+- Ecosystem / chain: [EVM chain, Solana cluster, Midnight, other]
+- Network: [Testnet name / chain ID]
+- Sponsor protocols or bounty tracks: [List]
+- Audit gate: x-ray [Not run / Done] | solidity-auditor [Not run / Done] | fizz [Not run / Skipped / Done] | tests [Not run / Passed / Failed]
+- Deployments file: docs/hackathon/DEPLOYMENTS.md
+
 ## Scope
 - Ship now (core): [Task IDs]
 - Stretch (auto-cut if behind): [Task IDs]
