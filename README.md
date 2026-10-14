@@ -65,3 +65,7 @@ All dependencies are optional: the skill reports what is missing and continues w
 `/hackaton [init | deps | docs | plan | build | verify | demo | status]`
 
 `templates/` holds the pristine AGENTS.md + docs/*.md pack (docs phase) and `templates/hackathon/` (STATE, TEAM, PITCH, DEPLOYMENTS) used for state, team coordination, pitch, and on-chain deployments. `references/` holds on-demand guides: `env-readiness.md` (accounts, keys, faucet funds, with `scripts/check-env.sh`), `ship.md` (deploy, demo video, submission), `web3.md` and `ai-projects.md` (loaded only for web3 / AI projects), and `dependencies.md`.
+
+## Development
+
+`python skills/hackaton/scripts/lint-skill.py` checks the frontmatter rules shared by Claude Code, Codex and OpenCode (name equals folder, description <= 1024 chars) and that every referenced path exists. Run it before committing.

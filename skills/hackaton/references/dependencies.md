@@ -1,6 +1,6 @@
 # Dependencies
 
-Skills, plugins and tools that `/hackaton` chains. Repos were verified to exist (stars/licenses as of 2026-10). Run `bash ~/.claude/skills/hackaton/scripts/check-deps.sh` to see which are missing.
+Skills, plugins and tools that `/hackaton` chains. Repos were verified to exist (stars/licenses as of 2026-10). Run `bash <skill-dir>/scripts/check-deps.sh` to see which are missing.
 
 Rules for the agent:
 - Never install silently. Tell the user what is missing, show the command from this file, and let the user run `/plugin ...` commands (agent cannot). Plain shell installs (`winget`, `pip`, `git clone`) need the user's OK first.

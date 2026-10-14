@@ -52,7 +52,7 @@ No arg or `init` -> Phase 0+1. `deps` -> Phase 0 only. `docs` -> 2. `plan` -> 3.
 
 ## Clock and budget
 
-The agent has no built-in clock. Run `date` at session start, at every checkpoint and at every phase boundary, and keep absolute times in the STATE.md phase table (planned start/end, actual end).
+The agent has no built-in clock. Run `date '+%Y-%m-%d %H:%M %z'` (numeric offset; zone names like `SEAST` are ambiguous) at session start, at every checkpoint and at every phase boundary, and keep absolute times with that offset in the STATE.md phase table (planned start/end, actual end). Convert the deadline the user gives (it may be in another timezone) to the same offset before computing time left.
 - **80% of a phase budget used:** warn once: "Phase N at 80%: X left, Y core tasks open."
 - **Phase over budget:** say so, show the overrun, and offer only feature cuts (drop `stretch`, shrink scope, mock a dependency). Never offer to skip superpowers steps, docs or checks.
 - **Behind at 50% of build:** propose the cut-list right then, not at the end.
@@ -99,7 +99,7 @@ Write the result into STATE.md. If the user brings no idea, propose 3 that pass 
 
 ### Persist state
 
-Right after intake create `docs/hackathon/STATE.md` and `docs/hackathon/TEAM.md` from `templates/hackathon/` (skip TEAM.md for solo). Fill event, deadline, judging criteria, hackathon rules, phase clock, idea filter result, env readiness results, testnet pre-approval. Never guess a deadline.
+As soon as the batched intake answers arrive (before any follow-up question) create `docs/hackathon/STATE.md` and `docs/hackathon/TEAM.md` from `templates/hackathon/` (skip TEAM.md for solo), so every later answer is written straight into them. Fill event, deadline, judging criteria, hackathon rules, phase clock, idea filter result, env readiness results, testnet pre-approval. Never guess a deadline.
 
 Then make resume work in a fresh session, because this skill only loads when invoked: add to the project's `AGENTS.md` (create a minimal one if missing) the line `Hackathon project: before any work read docs/hackathon/STATE.md and docs/hackathon/TEAM.md, and follow the phase and cut-list recorded there.` For Claude Code also ensure a root `CLAUDE.md` exists containing `@AGENTS.md`, since it reads CLAUDE.md, not AGENTS.md.
 
@@ -110,7 +110,7 @@ Then make resume work in a fresh session, because this skill only loads when inv
 
 Procedure:
 1. Inspect project. List which of the 8 destination files already exist.
-2. Copy only missing files to the project (`AGENTS.md` at root, seven files in `docs/`). Existing file -> propose section-level merge, ask before replacing. Do not touch unrelated files.
+2. Copy only missing files to the project (`AGENTS.md` at root, seven files in `docs/`). Existing file -> propose section-level merge, ask before replacing. Exception: an `AGENTS.md` that holds only the Phase 1 resume pointer is replaced by the template with that pointer line kept at the top, no question. Do not touch unrelated files.
 3. Fill in **dependency order**: PRD -> DESIGN_SYSTEM -> ARCHITECTURE -> DATABASE -> SECURITY -> CODE_STYLE -> TESTING -> AGENTS.md.
 4. **Fill every section of every template completely**, whatever the event length. Hackathon additions on top of the bundle:
    - PRD: add a `Demo moment` line (the 10 seconds judges remember) and a `Judging criteria -> feature` mapping. Every feature gets Given/When/Then acceptance criteria. "Explicitly excluded" must be filled; it protects the deadline.
