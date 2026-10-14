@@ -28,7 +28,7 @@ Most platforms require or reward a 2-3 minute video, and judges may only watch t
 ## Submission mechanics
 
 1. **Submit a draft early** (around 50% of the event) to see every field and character limit; platforms usually allow edits until the deadline. Confirm that with the rules.
-2. Prepare answers in a file (`docs/hackathon/SUBMISSION.md`): title, tagline, description, tech list, links (repo, live URL, video, deck), track/prize selections, team members, AI-usage disclosure if required.
+2. Prepare answers in `docs/hackathon/SUBMISSION.md` (copy `templates/hackathon/SUBMISSION.md`): title, tagline, description, tech list, links (repo, live URL, video, deck), track/prize selections, team members, AI-usage disclosure if required. Rehearsals and the backup recording are logged in `docs/DEMO.md` (from `templates/hackathon/DEMO.md`).
 3. Check each link logged out; check that the repo is public if required, has a license, and has no secrets in history.
 4. Re-open the submitted page after saving and confirm it shows the final text and links.
 5. Submit at least 30 minutes before the deadline; then only fix typos and broken links.

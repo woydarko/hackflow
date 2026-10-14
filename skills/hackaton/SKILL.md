@@ -106,7 +106,7 @@ Then make resume work in a fresh session, because this skill only loads when inv
 ## Phase 2 - Design and docs (8-document architecture bundle)
 
 1. Run `brainstorming` (superpowers) on the chosen idea. Feed it the Phase 1 facts as constraints: deadline, judging criteria, sponsor requirements, stack, team. Its approved design is the single source for the docs below; do not ask the user the same things twice.
-2. Set up the docs. Templates live in `templates/` (pristine, never edit): `AGENTS.md` + `docs/{PRD,DESIGN_SYSTEM,ARCHITECTURE,DATABASE,SECURITY,CODE_STYLE,TESTING}.md` from Docs_Architecture_Bundle, and `hackathon/{STATE,TEAM,PITCH,DEPLOYMENTS}.md` copied to `docs/hackathon/` when needed (STATE/TEAM in Phase 1, DEPLOYMENTS in Phase 2 for web3, PITCH in Phase 6).
+2. Set up the docs. Templates live in `templates/` (pristine, never edit): `AGENTS.md` + `docs/{PRD,DESIGN_SYSTEM,ARCHITECTURE,DATABASE,SECURITY,CODE_STYLE,TESTING}.md` from Docs_Architecture_Bundle, and `hackathon/{STATE,TEAM,PITCH,DEPLOYMENTS,SUBMISSION}.md` copied to `docs/hackathon/` when needed (STATE/TEAM in Phase 1, DEPLOYMENTS in Phase 2 for web3, PITCH and SUBMISSION in Phase 6), plus `hackathon/DEMO.md` copied to `docs/DEMO.md` in Phase 6.
 
 Procedure:
 1. Inspect project. List which of the 8 destination files already exist.
@@ -162,9 +162,9 @@ Execute the plan with `subagent-driven-development` (or `executing-plans` if the
 
 Read `references/ship.md` first (deploy checks, demo video, submission mechanics) and follow it. Produce, in the repo:
 - `README.md`: one-line pitch, problem, solution, screenshot/GIF, tech stack, **run in under 5 commands**, team, what is real vs mocked (be honest), and the AI-usage disclosure if the rules require it (AI coding assistants included).
-- `docs/DEMO.md`: 2-3 min script. Hook (10s) -> problem (20s) -> golden path live (60-90s) -> architecture/tech (20s) -> what's next (10s). List exact click path, seed data, backup recording plan.
+- `docs/DEMO.md` (from `templates/hackathon/DEMO.md`): 2-3 min script (hook 10s -> problem 20s -> golden path 60-90s -> tech 20s -> next 10s), setup checklist, exact click path, seed data, failure plan, judge Q&A prep, backup recording, and the rehearsal log (at least 5 runs).
 - `docs/hackathon/PITCH.md` (from template): one-liner, problem evidence, why now, demo moment, why-not-a-wrapper, business model canvas, market, criteria map. Judges often score investability and clarity, so spend leftover time here, not on extra features.
-- Submission writeup, written for human **and LLM-assisted judges** (grading increasingly reads the writeup, every linked project, and every video): consistent structure, track named explicitly, self-contained (do not rely on reading the code), map each judging criterion to evidence, every link public and openable without login, every video reachable, claims match what is real vs mocked.
+- Submission writeup in `docs/hackathon/SUBMISSION.md` (from `templates/hackathon/SUBMISSION.md`: form fields, criteria map, sponsor requirements, link checks, rules compliance, submission log), written for human **and LLM-assisted judges** (grading increasingly reads the writeup, every linked project, and every video): consistent structure, track named explicitly, self-contained (do not rely on reading the code), map each judging criterion to evidence, every link public and openable without login, every video reachable, claims match what is real vs mocked.
 - Submission checklist: repo public/accessible, license, deployed URL tested from another device and logged out, video uploaded and playable, form fields filled, track/prize boxes ticked, submitted **before** deadline minus 30 min.
 - Pitch deck only if required: use `ppt-master` skill.
 Then run `finishing-a-development-branch` (superpowers) for merge/PR/tag.
