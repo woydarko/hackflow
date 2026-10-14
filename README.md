@@ -1,32 +1,58 @@
 # hackflow
 
-Claude Code skill `/hackaton`: a time-boxed hackathon workflow (intake, docs, plan, build, verify, demo) that chains caveman, rtk, ponytail, superpowers and an 8-document project architecture pack.
+Claude Code skill `/hackaton`: a time-boxed hackathon workflow (intake, docs, plan, build, verify, demo) that chains caveman, rtk, ponytail, superpowers and an 8-document project architecture pack. Has a web3 mode (chain detection, contract audit gate, testnet checklist).
 
-## Install
+## Install the skill
+
+macOS / Linux / Git Bash. Remove the old folder first so a re-install does not nest (`~/.claude/skills/hackaton/hackaton`):
 
 ```bash
 mkdir -p ~/.claude/skills
-cp -r skills/hackaton ~/.claude/skills/hackaton
+rm -rf ~/.claude/skills/hackaton
+cp -r skills/hackaton ~/.claude/skills/
 ```
 
-Optional companions (the skill checks for them and continues without):
+Windows PowerShell:
 
-```
-/plugin install superpowers@claude-plugins-official
-/plugin marketplace add dietrichgebert/ponytail
-/plugin install ponytail@ponytail
+```powershell
+New-Item -ItemType Directory -Force "$HOME\.claude\skills" | Out-Null
+Remove-Item -Recurse -Force "$HOME\.claude\skills\hackaton" -ErrorAction SilentlyContinue
+Copy-Item -Recurse skills\hackaton "$HOME\.claude\skills\"
 ```
 
-Web3 mode companions (optional, third-party; read them before installing):
+Restart or reload Claude Code afterwards.
 
+## Dependencies
+
+The skill chains other skills and tools. Check what is missing (read-only):
+
+```bash
+bash ~/.claude/skills/hackaton/scripts/check-deps.sh
 ```
-/plugin marketplace add Cyfrin/solskill
-/plugin install solidity@solskill
-git clone https://github.com/pashov/skills  # copy solidity-auditor, x-ray, fizz into ~/.claude/skills/
-```
+
+or run `/hackaton deps`. Every dependency, its source GitHub repo and install command is listed in [`skills/hackaton/references/dependencies.md`](skills/hackaton/references/dependencies.md). Summary:
+
+| Tier | Dependency | Source repo |
+|---|---|---|
+| core | caveman | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) |
+| core | rtk | [rtk-ai/rtk](https://github.com/rtk-ai/rtk) |
+| core | ponytail | [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) |
+| core | superpowers | [obra/superpowers](https://github.com/obra/superpowers) |
+| recommended | antislop | [miqdadbadjuber/anti-slop](https://github.com/miqdadbadjuber/anti-slop) |
+| recommended | frontend-design | [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official) |
+| recommended | agent-reach | [Panniantong/Agent-Reach](https://github.com/Panniantong/Agent-Reach) |
+| recommended | ecc | [affaan-m/ECC](https://github.com/affaan-m/ECC) |
+| recommended | ppt-master | [hugohe3/ppt-master](https://github.com/hugohe3/ppt-master) |
+| recommended | playwright | [openai/skills](https://github.com/openai/skills), [microsoft/playwright-cli](https://github.com/microsoft/playwright-cli) |
+| recommended | graphify | [Graphify-Labs/graphify](https://github.com/Graphify-Labs/graphify) |
+| web3 | solskill | [Cyfrin/solskill](https://github.com/Cyfrin/solskill) (AGPL-3.0, install separately) |
+| web3 | pashov skills | [pashov/skills](https://github.com/pashov/skills) |
+| web3 | midnight skills | [mzf11125/midnight_agent_skills](https://github.com/mzf11125/midnight_agent_skills) |
+
+All dependencies are optional: the skill reports what is missing and continues without it. They are third-party code, so read them before installing.
 
 ## Use
 
-`/hackaton [init | docs | plan | build | verify | demo | status]`
+`/hackaton [init | deps | docs | plan | build | verify | demo | status]`
 
-`templates/` holds the pristine AGENTS.md + docs/*.md pack (docs phase) and `templates/hackathon/` (STATE, TEAM, PITCH, DEPLOYMENTS) used for state, team coordination, and pitch.
+`templates/` holds the pristine AGENTS.md + docs/*.md pack (docs phase) and `templates/hackathon/` (STATE, TEAM, PITCH, DEPLOYMENTS) used for state, team coordination, pitch, and on-chain deployments. `references/web3.md` is loaded only for web3 projects.
