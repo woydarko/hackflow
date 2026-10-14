@@ -21,4 +21,4 @@ Optional companions (the skill checks for them and continues without):
 
 `/hackaton [init | docs | plan | build | verify | demo | status]`
 
-`templates/` holds the pristine AGENTS.md + docs/*.md pack that the `docs` phase copies into your project.
+`templates/` holds the pristine AGENTS.md + docs/*.md pack (docs phase) and `templates/hackathon/` (STATE, TEAM, PITCH) used for state, team coordination, and pitch.
