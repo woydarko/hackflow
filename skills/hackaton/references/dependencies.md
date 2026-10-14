@@ -43,6 +43,14 @@ Optional per ecosystem (not installed by default, ask first):
 - Broad catalog (pick single skills, do not install all): [andresdefi/cryptoskills](https://github.com/andresdefi/cryptoskills).
 - Contract security research: [awarexone/web3-bug-bounty-hunting-ai-skills](https://github.com/awarexone/web3-bug-bounty-hunting-ai-skills).
 
+## Other agents (Codex, Cursor, Gemini CLI, Copilot CLI, ...)
+
+- The `SKILL.md` format (frontmatter `name` + `description`) is shared, so copy `skills/hackaton` into the agent's skills folder (Codex: `~/.codex/skills/`). `check-deps.sh` looks in `~/.claude/skills`, `~/.codex/skills` and `~/.agents/skills`.
+- `/plugin ...` commands exist only in Claude Code. `npx skills add <owner/repo>` is a cross-agent installer documented in the READMEs of Cyfrin/solskill, Uniswap/uniswap-ai and hugohe3/ppt-master. `npx skills add woydarko/hackflow` should work with this repo's layout but is untested.
+- superpowers lists install steps for Codex, Cursor, Gemini CLI, Copilot CLI, OpenCode and more in its [README](https://github.com/obra/superpowers). For caveman, ponytail and antislop follow the install section of each repo's README.
+- rtk: `rtk init -g --codex` or `rtk init -g --gemini` registers its hook for those agents.
+- Hooks (rtk, caveman, ponytail) are per-agent features. Without them the skill still runs; they only change output style and efficiency.
+
 ## Updating
 
 Plugins: `/plugin marketplace update` then reinstall or update the plugin. Copied skills: re-clone and copy again (delete the old folder first so it does not nest).

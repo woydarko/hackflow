@@ -37,6 +37,7 @@ Last updated: [timestamp]
 ## Web3 (if applicable)
 - Ecosystem / chain: [EVM chain, Solana cluster, Midnight, other]
 - Network: [Testnet name / chain ID]
+- Testnet deploys pre-approved: [Yes / No] (mainnet always needs per-action approval)
 - Sponsor protocols or bounty tracks: [List]
 - Audit gate: x-ray [Not run / Done] | solidity-auditor [Not run / Done] | fizz [Not run / Skipped / Done] | tests [Not run / Passed / Failed]
 - Deployments file: docs/hackathon/DEPLOYMENTS.md

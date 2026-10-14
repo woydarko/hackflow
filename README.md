@@ -22,6 +22,10 @@ Copy-Item -Recurse skills\hackaton "$HOME\.claude\skills\"
 
 Restart or reload Claude Code afterwards.
 
+### Other agents (Codex, Cursor, Gemini CLI, ...)
+
+The `SKILL.md` format is shared, so copy `skills/hackaton` into the agent's skills folder (Codex: `~/.codex/skills/`). The skill never assumes `~/.claude`: it resolves its own folder and `scripts/check-deps.sh` looks in `~/.claude/skills`, `~/.codex/skills` and `~/.agents/skills`. `/plugin ...` commands are Claude Code only; see [dependencies](skills/hackaton/references/dependencies.md) for the cross-agent options (`npx skills add owner/repo` works for several of the dependencies; `npx skills add woydarko/hackflow` should work for this repo but is untested).
+
 ## Dependencies
 
 The skill chains other skills and tools. Check what is missing (read-only):
