@@ -29,7 +29,7 @@ Follow `using-superpowers`. Its skills are mandatory workflow, not suggestions, 
 
 ## Routing
 
-No arg or `init` -> Phase 0+1. `deps` -> Phase 0 only. `docs` -> 2. `plan` -> 3. `build` -> 4. `verify` -> 5. `demo` -> 6. `status` -> read `docs/hackathon/STATE.md` and print phase cursor, time left, core done/total, unresolved items.
+No arg or `init` -> Phase 0+1. `deps` -> Phase 0 only. `docs` -> 2. `plan` -> 3. `build` -> 4. `verify` -> 5. `demo` -> 6. `status` -> read `docs/hackathon/STATE.md` and print phase cursor, time left, the phase clock table (planned vs actual end per phase), core done/total, unresolved items, and any over-budget warning (see **Clock and budget**).
 
 **Guard:** every arg except `init` and `deps` first checks that `docs/hackathon/STATE.md` exists. If missing, say so and offer Phase 1 before doing anything else. Never build against an unknown deadline, scope or judging criteria.
 
@@ -44,13 +44,24 @@ No arg or `init` -> Phase 0+1. `deps` -> Phase 0 only. `docs` -> 2. `plan` -> 3.
 - **Do not invent** requirements, commands, credentials, or test results. Unknown -> ask or mark `Unresolved`.
 - **Approvals.** Production deploys, prod data changes, external messaging and spending money need explicit user OK each time. Web3 exception: if the user approved testnet/devnet deploys once at intake (recorded in STATE.md as `Testnet deploys pre-approved: Yes`), those need no further OK. Mainnet and real funds always need per-action approval.
 
+## Clock and budget
+
+The agent has no built-in clock. Run `date` at session start, at every checkpoint and at every phase boundary, and keep absolute times in the STATE.md phase table (planned start/end, actual end).
+- **80% of a phase budget used:** warn once: "Phase N at 80%: X left, Y core tasks open."
+- **Phase over budget:** say so, show the overrun, and offer only feature cuts (drop `stretch`, shrink scope, mock a dependency). Never offer to skip superpowers steps, docs or checks.
+- **Behind at 50% of build:** propose the cut-list right then, not at the end.
+- **Final 3 hours:** print time left in every reply.
+- Suggest to the user once: `/loop 60m /hackaton status` in Claude Code (or a phone/desk timer elsewhere) so the check happens even when nobody types. Only the user can start it.
+
 ## Phase 0 - Toolchain check (once per project)
 
 Run `bash <skill-dir>/scripts/check-deps.sh` (read-only). It detects the agent environment and lists core / recommended / web3 dependencies as OK or MISSING with their source GitHub repo. Report missing items in one line each.
 
 **Superpowers is the only blocking dependency.** If it is MISSING, stop here, show the install command from `references/dependencies.md`, and continue only after the user has installed it. For every other MISSING item show the install command and source repo, let the user run it (shell installs need the user's OK), then continue without it if the user declines, saying so. Never install silently; third-party code should be read before first install. Core = superpowers, caveman, rtk, ponytail.
 
-Also detect the chain/ecosystem. If the brief or project is web3 (see **Web3 mode** below), follow it in every phase.
+Then check environment readiness: run `bash <skill-dir>/scripts/check-env.sh` and work through `references/env-readiness.md` (accounts, secrets, tooling, and for web3 **request faucet funds in the first hour**). Record results in STATE.md.
+
+Also detect the project type. If the brief or project is web3 (see **Web3 mode**) or has an AI feature (see **AI mode**), follow those sections in every phase.
 
 ## Phase 1 - Intake
 
@@ -63,8 +74,9 @@ Gather the event facts and pick the idea. Send **one batched message** with ever
 5. Platform + stack preference/constraints. Existing repo? Path.
 6. Must-use tech/APIs/credits.
 7. Web3 only: chain/ecosystem and track, sponsor protocols or bounties, wallets and faucets, whether contracts must be deployed for judging, and **"May I deploy to testnet/devnet without asking each time?"** (record the answer).
+8. **Rules and eligibility**: must code be written during the event (are pre-existing code, templates or a prior project allowed)? Are AI tools or specific models allowed, and must their use be disclosed? Team size limits, open-source/license requirement, allowed and required APIs/SDKs, IP ownership, prize eligibility (age, region, KYC), submission language, tracks per project. Ask for the rules page link and read it yourself; write the binding points into STATE.md under `Hackathon rules`.
 
-Then compute a **time budget** and state it: default split ~15% design + docs + plan, 55% build (including TDD and reviews), 10% verify, 20% demo/submission buffer. Web3 mode: 15% / 50% / 15% (verify + audit) / 20%. Re-announce at each phase transition.
+Then compute a **time budget** and state it: default split ~15% design + docs + plan, 55% build (including TDD and reviews), 10% verify, 20% demo/submission buffer. Web3 mode: 15% / 50% / 15% (verify + audit) / 20%. Turn the split into **absolute planned start/end times per phase** (run `date` for now) and write them in the STATE.md phase table. Re-announce at each phase transition.
 
 ### Idea filter (run on every candidate idea before Phase 2)
 
@@ -81,7 +93,7 @@ Write the result into STATE.md. If the user brings no idea, propose 3 that pass 
 
 ### Persist state
 
-Right after intake create `docs/hackathon/STATE.md` and `docs/hackathon/TEAM.md` from `templates/hackathon/` (skip TEAM.md for solo). Fill event, deadline, judging criteria, budget, idea filter result, testnet pre-approval. Never guess a deadline.
+Right after intake create `docs/hackathon/STATE.md` and `docs/hackathon/TEAM.md` from `templates/hackathon/` (skip TEAM.md for solo). Fill event, deadline, judging criteria, hackathon rules, phase clock, idea filter result, env readiness results, testnet pre-approval. Never guess a deadline.
 
 Then make resume work in a fresh session, because this skill only loads when invoked: add to the project's `AGENTS.md` (create a minimal one if missing) the line `Hackathon project: before any work read docs/hackathon/STATE.md and docs/hackathon/TEAM.md, and follow the phase and cut-list recorded there.` For Claude Code also ensure a root `CLAUDE.md` exists containing `@AGENTS.md`, since it reads CLAUDE.md, not AGENTS.md.
 
@@ -115,6 +127,7 @@ After approval run `using-git-worktrees`, then `writing-plans` (superpowers), un
 - Mark each task `core` or `stretch`. Cut line: `stretch` is dropped automatically if behind schedule. Record **ship now** vs **post-hackathon** in STATE.md.
 - Scope-cut prompt when scope creeps: "What are the minimum 3 features for a working demo?"
 - Team: assign one owner per file area in TEAM.md and list integration points (API paths, shared types) before anyone builds.
+- Deploy early: read `references/ship.md`, pick hosting in ARCHITECTURE.md Operations, and schedule a walking-skeleton deploy by ~40% of the build budget (production deploys still need the user's OK).
 Get user approval of the plan, then stop.
 
 ## Phase 4 - Build
@@ -126,7 +139,7 @@ Execute the plan with `subagent-driven-development` (or `executing-plans` if the
 - A bug that survives `systematic-debugging` and blocks the golden path: mock or cut it, note in `Unresolved` and STATE.md, tell the user.
 - Commit small and often (so a broken last-minute change can be reverted). Use `rtk` for git/test output if installed.
 - Unfinished features go behind a feature flag so the demo path always works.
-- Checkpoint every ~hour (use the system clock, e.g. `date`, for real timestamps): print remaining time, done/total core tasks, cut decision, and append a row to the STATE.md checkpoint table. Update TEAM.md blockers. Write a short handoff note at each shift change.
+- Checkpoint every ~hour and at every phase boundary (see **Clock and budget**): print remaining time, done/total core tasks, cut decision, and append a row to the STATE.md checkpoint table. Update TEAM.md blockers. Write a short handoff note at each shift change.
 
 ## Phase 5 - Verify (before demo, not after)
 
@@ -137,11 +150,12 @@ Execute the plan with `subagent-driven-development` (or `executing-plans` if the
 5. Pre-demo checklist: env vars documented, database seeded with demo data, error boundaries and loading/empty/error states on every demo screen, no dead buttons on the golden path.
 6. **Rehearse the full demo at least 5 times**, fixing each failure point. Most hackathon failures are demo crashes.
 7. Final `requesting-code-review` (superpowers) on the whole branch.
+8. **Rules compliance**: re-read STATE.md `Hackathon rules` and check each binding rule against the repo and the submission (code origin, AI disclosure, license, team, required APIs). A violation is a blocker; tell the user.
 
 ## Phase 6 - Demo and submission
 
-Produce, in the repo:
-- `README.md`: one-line pitch, problem, solution, screenshot/GIF, tech stack, **run in under 5 commands**, team, what is real vs mocked (be honest).
+Read `references/ship.md` first (deploy checks, demo video, submission mechanics) and follow it. Produce, in the repo:
+- `README.md`: one-line pitch, problem, solution, screenshot/GIF, tech stack, **run in under 5 commands**, team, what is real vs mocked (be honest), and the AI-usage disclosure if the rules require it (AI coding assistants included).
 - `docs/DEMO.md`: 2-3 min script. Hook (10s) -> problem (20s) -> golden path live (60-90s) -> architecture/tech (20s) -> what's next (10s). List exact click path, seed data, backup recording plan.
 - `docs/hackathon/PITCH.md` (from template): one-liner, problem evidence, why now, demo moment, why-not-a-wrapper, business model canvas, market, criteria map. Judges often score investability and clarity, so spend leftover time here, not on extra features.
 - Submission writeup, written for human **and LLM-assisted judges** (grading increasingly reads the writeup, every linked project, and every video): consistent structure, track named explicitly, self-contained (do not rely on reading the code), map each judging criterion to evidence, every link public and openable without login, every video reachable, claims match what is real vs mocked.
@@ -152,6 +166,10 @@ Then run `finishing-a-development-branch` (superpowers) for merge/PR/tag.
 ## Web3 mode
 
 Activate when the brief mentions a chain/token/wallet/dApp/DeFi/NFT/DAO, or the repo has `foundry.toml`, `hardhat.config.*`, `*.sol`, `*.compact`, `Anchor.toml`, `Move.toml`, or deps like `viem`/`wagmi`/`ethers`/`@solana/web3.js`. Then read `references/web3.md` and apply its safety rules and per-phase hooks in every phase. Not web3: skip it.
+
+## AI mode
+
+Activate when the idea or repo has an LLM, agent, RAG, vision, voice or ML feature (deps like `@anthropic-ai/sdk`, `openai`, `ai`, `langchain`, `transformers`, `torch`, or a brief that says chatbot/agent/assistant). Then read `references/ai-projects.md` and apply its per-phase guidance (server-side keys, cost caps, replay mode for the demo, eval set, prompt-injection checks, AI disclosure) on top of every phase. Not an AI project: skip it.
 
 ## Output style
 

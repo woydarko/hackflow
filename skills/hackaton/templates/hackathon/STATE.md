@@ -14,18 +14,35 @@ Single source of truth for `/hackaton`. Update at every phase change and checkpo
 | --- | --- | --- |
 | [Criterion] | [Weight] | [F-xx or artifact] |
 
-## Phase cursor
-Current phase: [0 toolchain | 1 intake | 2 docs | 3 plan | 4 build | 5 verify | 6 demo]
-Last updated: [timestamp]
+## Hackathon rules (binding points from the official rules page)
+- Rules page: [URL]
+- Code origin (written during the event? templates / prior work allowed?): [Answer]
+- AI tools / models allowed and disclosure required: [Answer]
+- Team size, tracks per project, eligibility (age, region, KYC): [Answer]
+- License / open-source requirement, IP ownership: [Answer]
+- Required or forbidden APIs / SDKs: [Answer]
+- Submission language and limits: [Answer]
 
-| Phase | Status | Budget | Notes |
-| --- | --- | --- | --- |
-| 1 Intake | Not started | [h] | |
-| 2 Docs | Not started | [h] | |
-| 3 Plan | Not started | [h] | |
-| 4 Build | Not started | [h] | |
-| 5 Verify | Not started | [h] | |
-| 6 Demo and submit | Not started | [h] | |
+## Environment readiness
+- check-env.sh run at: [timestamp] - missing: [List or none]
+- Accounts, keys (names only), hosting, repo access: [Done / Open items]
+- Web3: faucet funds requested at [timestamp], balances in DEPLOYMENTS.md: [Done / Open]
+- AI: provider key tested, spend cap set: [Done / Open / n.a.]
+
+## Phase cursor and clock
+Current phase: [0 toolchain | 1 intake | 2 docs | 3 plan | 4 build | 5 verify | 6 demo]
+Last updated: [timestamp from `date`]
+
+| Phase | Status | Budget | Planned start -> end | Actual end | Notes |
+| --- | --- | --- | --- | --- | --- |
+| 1 Intake | Not started | [h] | [time -> time] | | |
+| 2 Design + docs | Not started | [h] | [time -> time] | | |
+| 3 Plan | Not started | [h] | [time -> time] | | |
+| 4 Build | Not started | [h] | [time -> time] | | |
+| 5 Verify | Not started | [h] | [time -> time] | | |
+| 6 Demo and submit | Not started | [h] | [time -> time] | | |
+
+Over-budget warnings sent: [Phase, time]
 
 ## Idea filter result
 - One-sentence pitch: [Problem -> solution -> user]
