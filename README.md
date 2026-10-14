@@ -1,6 +1,6 @@
 # hackflow
 
-Claude Code skill `/hackaton`: a time-boxed hackathon workflow (intake, docs, plan, build, verify, demo) that chains caveman, rtk, ponytail, superpowers and an 8-document project architecture pack. Has a web3 mode (chain detection, contract audit gate, testnet checklist).
+Claude Code skill `/hackaton`: an all-in hackathon workflow (intake, design + docs, plan, build, verify, demo) built on the superpowers workflow as its backbone, plus caveman, rtk, ponytail and an 8-document project architecture pack. Has a web3 mode (chain detection, contract audit gate, testnet checklist).
 
 ## Install the skill
 

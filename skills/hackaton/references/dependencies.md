@@ -5,9 +5,11 @@ Skills, plugins and tools that `/hackaton` chains. Repos were verified to exist 
 Rules for the agent:
 - Never install silently. Tell the user what is missing, show the command from this file, and let the user run `/plugin ...` commands (agent cannot). Plain shell installs (`winget`, `pip`, `git clone`) need the user's OK first.
 - Everything below is third-party code. Read a repo's skill files and scripts before the first install, as with any dependency.
-- Missing optional dependency: continue the flow without it and say so.
+- Missing `superpowers` (required): stop and get it installed first. Any other missing dependency: continue the flow without it and say so.
 
 ## Core (used in every hackathon)
+
+`superpowers` is **required**: it is the backbone of the whole flow and the only dependency that blocks `/hackaton` when missing. The others are core but optional.
 
 | Name | What for | Source repo | Install |
 |---|---|---|---|

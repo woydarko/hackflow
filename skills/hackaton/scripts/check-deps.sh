@@ -33,7 +33,7 @@ done <<'EOF'
 core|caveman|plugin:caveman@caveman+skill:caveman|JuliusBrussee/caveman
 core|rtk|cmd:rtk|rtk-ai/rtk
 core|ponytail|plugin:ponytail@ponytail+skill:ponytail|DietrichGebert/ponytail
-core|superpowers|plugin:superpowers@claude-plugins-official+skill:brainstorming|obra/superpowers
+REQUIRED|superpowers|plugin:superpowers@claude-plugins-official+skill:brainstorming|obra/superpowers
 recommended|antislop|plugin:antislop@anti-slop+skill:antislop|miqdadbadjuber/anti-slop
 recommended|frontend-design|skill:frontend-design|anthropics/claude-plugins-official
 recommended|agent-reach|skill:agent-reach|Panniantong/Agent-Reach
